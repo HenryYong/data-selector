@@ -1,0 +1,23 @@
+{
+  "name": "data-selector",
+  "version": "1.0.0",
+  "description": "Dropdown component of data selecting",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HenryYong/data-selector.git"
+  },
+  "keywords": [
+    "data-selector",
+    "dropdown"
+  ],
+  "author": "HenryYang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HenryYong/data-selector/issues"
+  },
+  "homepage": "https://github.com/HenryYong/data-selector#readme"
+}

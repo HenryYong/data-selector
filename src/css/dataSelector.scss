@@ -1,0 +1,96 @@
+/* !
+ * Created by Henry Yang @ 2017/04/13
+ * MIT License
+ */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.hidden{
+    display: none;
+}
+
+.data-selector{
+    position: relative;
+    line-height: 1;
+    &-wrapper{
+        width: 100%;
+        min-height: 38px;
+        padding: 7px 10px 2px 10px;
+        border: 1px solid #ddd;
+        &:hover{
+            cursor: text;
+        }
+    }
+    &-item{
+        display: inline-block;
+        margin: 0 5px 5px 0;
+        padding: 3px 5px;
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+        background-color: #fafafa;
+        font-size: 14px;
+        color: #333;
+    }
+    &-input{
+        width: 10px;
+        min-height: 22px;
+        padding: 0 2px;
+        vertical-align: middle;
+        border: none;
+        outline: none;
+        font-size: 12px;
+    }
+    &-list{
+        position: absolute;
+        top: 40px;
+        left: 0;
+        display: none;
+        min-width: 230px;
+        background-color: #fafbfb;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        &-item{
+            min-width: 120px;
+            padding: 5px 10px;
+            line-height: 30px;
+            color: #333;
+            cursor: pointer;
+            font-size: 14px;
+            &.data-selector-active,
+            &:not([data-selector="empty"]):hover{
+                background-color: #f4f4f4;
+                &:after{
+                    content: '';
+                    display: inline-block;
+                    float: right;
+                    margin-top: 10px;
+                    width: 10px;
+                    height: 10px;
+                    background: {
+                        image: url(./../images/icon_enter.png);
+                        repeat: no-repeat;
+                    }
+                }
+            }
+        }
+        & > ul{
+            list-style: none;
+            & > li:last-child{
+                .data-selector-list-item{
+                    border: none;
+                }
+            }
+        }
+    }
+    &-highlight{
+        font-weight: bold;
+        color: #E95B5F;
+    }
+    &-empty{
+
+    }
+}

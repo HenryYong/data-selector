@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>demo</title>
+        <link rel="stylesheet" href="dist/css/dataSelector.css">
+    </head>
+    <body>
+        <input type="text" data-id="data-selector">
+        <a href="javascript:;" id="getValue">getValue</a>
+        <a href="javascript:;" id="setValue">setValue</a>
+        <a href="javascript:;" id="appendValue">appendValue</a>
+        <a href="javascript:;" id="clear">clear</a>
+        <a href="javascript:;" id="destroy">destroy</a>
+        <a href="javascript:;" id="reset">reset</a>
+        <script src="dist/js/dataSelector.js"></script>
+        <script type="text/javascript">
+            var s = new dataSelector({
+                template: '<span>%:capital%</span> - <span>[[%:alias%]]</span> - %:alias%',
+                savedKey: 'alias',
+                showKey: 'capital',
+                data: [
+                    {
+                        "id": 1,
+                        "capital": "北京1",
+                        "alias": "BJ1"
+                    },
+                    {
+                        "id": 2,
+                        "capital": "北京2",
+                        "alias": "BJ2"
+                    },
+                    {
+                        "id": 3,
+                        "capital": "北京3",
+                        "alias": "BJ3"
+                    },
+                    {
+                        "id": 4,
+                        "capital": "北京4",
+                        "alias": "BJ4"
+                    },
+                    {
+                        "id": 5,
+                        "capital": "北京5",
+                        "alias": "BJ5"
+                    },
+                    {
+                        "id": 6,
+                        "capital": "北京6",
+                        "alias": "BJ6"
+                    },
+                    {
+                        "id": 7,
+                        "capital": "北京7",
+                        "alias": "BJ7"
+                    },
+                    {
+                        "id": 8,
+                        "capital": "北京8",
+                        "alias": "BJ8"
+                    },
+                    {
+                        "id": 9,
+                        "capital": "北京9",
+                        "alias": "BJ9"
+                    },
+                    {
+                        "id": 10,
+                        "capital": "北京10",
+                        "alias": "BJ10"
+                    },
+                    {
+                        "id": 11,
+                        "capital": "北京11",
+                        "alias": "BJ1"
+                    },
+                    {
+                        "id": 12,
+                        "capital": "北京12",
+                        "alias": "BJ12"
+                    }
+                ]
+            });
+
+            document.querySelector('#getValue').addEventListener('click', function(){
+                alert(s.getValue());
+            }, false);
+
+            document.querySelector('#setValue').addEventListener('click', function(){
+                s.setValue([
+                    {
+                        "id": 3,
+                        "capital": "北京3",
+                        "alias": "BJ3"
+                    },
+                    {
+                        "id": 4,
+                        "capital": "北京4",
+                        "alias": "BJ4"
+                    },
+                    {
+                        "id": 5,
+                        "capital": "北京5",
+                        "alias": "BJ5"
+                    }
+                ]);
+            }, false);
+
+            document.querySelector('#appendValue').addEventListener('click', function(){
+                s.appendValue([
+                    {
+                        "id": 3,
+                        "capital": "北京3",
+                        "alias": "BJ3"
+                    },
+                    {
+                        "id": 7,
+                        "capital": "北京7",
+                        "alias": "BJ7"
+                    },
+                    {
+                        "id": 5,
+                        "capital": "北京5",
+                        "alias": "BJ5"
+                    },
+                    {
+                        "id": 10,
+                        "capital": "北京10",
+                        "alias": "BJ10"
+                    }
+                ]);
+            }, false);
+
+            document.querySelector('#clear').addEventListener('click', function(){
+                s.clear();
+            });
+
+            document.querySelector('#destroy').addEventListener('click', function(){
+                s.destroy();
+            });
+
+            document.querySelector('#reset').addEventListener('click', function(){
+                s.reset();
+            });
+        </script>
+    </body>
+</html>
