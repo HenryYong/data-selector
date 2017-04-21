@@ -50,7 +50,6 @@
         left: 0;
         display: none;
         min-width: 230px;
-        background-color: #fafbfb;
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
         z-index: 9999;
         &-item{
@@ -79,6 +78,11 @@
         }
         & > ul{
             list-style: none;
+            background-color: #fafbfb;
+            &.scrollable{
+                height: 200px;
+                overflow: scroll;
+            }
             & > li:last-child{
                 .data-selector-list-item{
                     border: none;

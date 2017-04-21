@@ -50,7 +50,6 @@
   left: 0;
   display: none;
   min-width: 230px;
-  background-color: #fafbfb;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
   z-index: 9999;
 }
@@ -77,6 +76,11 @@
 }
 .data-selector-list > ul {
   list-style: none;
+  background-color: #fafbfb;
+}
+.data-selector-list > ul.scrollable {
+  height: 200px;
+  overflow: scroll;
 }
 .data-selector-list > ul > li:last-child .data-selector-list-item {
   border: none;
