@@ -4,7 +4,7 @@
   "description": "Dropdown component of data selecting",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,7 @@
   "bugs": {
     "url": "https://github.com/HenryYong/data-selector/issues"
   },
-  "homepage": "https://github.com/HenryYong/data-selector#readme"
+  "homepage": "https://github.com/HenryYong/data-selector#readme",
+  "devDependencies": {
+  }
 }
