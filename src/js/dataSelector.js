@@ -90,6 +90,14 @@
     }
 
     /**
+     *  Error handling
+     *  @param msg {String} error message
+     */
+    var _error = function(msg) {
+        console.error(msg);
+    }
+
+    /**
      *  construct function
      */
     function dataSelector(options) {
@@ -124,6 +132,11 @@
      *  init plugin
      */
     var _init = function() {
+        if(!_this.template) {
+            _error('template is required');
+            return;
+        }
+
         _initStyle();
         _initEvents();
         _extractTmp();

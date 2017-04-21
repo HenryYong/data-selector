@@ -4,21 +4,46 @@
         <meta charset="utf-8">
         <title>demo</title>
         <link rel="stylesheet" href="dist/css/dataSelector.css">
+        <style>
+            .row{
+                padding: 20px;
+            }
+
+            .row a{
+                display: inline-block;
+                margin-top: 10px;
+                padding: 7px 13px;
+                border: 1px solid #ccc;
+                border-radius: 2px;
+                color: #333;
+                text-decoration: none;
+                background-color: #fff;
+                font-size: 12px;
+            }
+
+            .row a:hover{
+                background-color: #fafafa;
+            }
+        </style>
     </head>
     <body>
-        <input type="text" data-id="data-selector">
-        <a href="javascript:;" id="getValue">getValue</a>
-        <a href="javascript:;" id="setValue">setValue</a>
-        <a href="javascript:;" id="appendValue">appendValue</a>
-        <a href="javascript:;" id="clear">clear</a>
-        <a href="javascript:;" id="destroy">destroy</a>
-        <a href="javascript:;" id="reset">reset</a>
+        <div class="row">
+            <input type="text" data-id="data-selector">
+            <a href="javascript:;" id="getValue" title="getValue">getValue</a>
+            <a href="javascript:;" id="setValue" title="setValue">setValue</a>
+            <a href="javascript:;" id="appendValue" title="appendValue">appendValue</a>
+            <a href="javascript:;" id="clear" title="clear">clear</a>
+            <a href="javascript:;" id="destroy" title="destroy">destroy</a>
+            <a href="javascript:;" id="reset" title="reset">reset</a>
+        </div>
         <script src="dist/js/dataSelector.js"></script>
         <script type="text/javascript">
             var s = new dataSelector({
                 template: '<span>%:capital%</span> - <span>[[%:alias%]]</span> - %:alias%',
                 savedKey: 'alias',
                 showKey: 'capital',
+                maxResult: 10,
+                resultScroll: true,
                 data: [
                     {
                         "id": 1,
