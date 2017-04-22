@@ -418,7 +418,7 @@
                     cur = curItem[curKey];
 
                 if(_resultList.length < _this.maxResult) {  // limit the number of result lsit
-                    if(cur.indexOf(value) == 0 && !_isExisted($el.value.split(';'), curItem[_this.savedKey])) {    // filter reduplicate item
+                    if(cur.toString().indexOf(value) == 0 && !_isExisted($el.value.split(';'), curItem[_this.savedKey])) {    // filter reduplicate item
                         _resultList.push(curItem);
                     }
                 }

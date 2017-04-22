@@ -15,6 +15,7 @@
 .data-selector {
   position: relative;
   line-height: 1;
+  background-color: #fff;
 }
 .data-selector-wrapper {
   width: 100%;
