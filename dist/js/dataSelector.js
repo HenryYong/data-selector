@@ -104,7 +104,7 @@
         var opts = options || {};
 
         _this = this;
-        this.el = opts.el || document.querySelector('[data-id="data-selector"]');   // hidden input
+        this.el = document.querySelector(opts.el) || document.querySelector('[data-id="data-selector"]');   // hidden input
         this.template = opts.template || '';   // *template for result list, required
         this.data = opts.data || [];           // *data to be filtered and selected, required
         this.maxData = opts.maxData || -1;     // whether limit the number of selected item, -1 means no limitation
