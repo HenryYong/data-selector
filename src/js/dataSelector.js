@@ -190,6 +190,8 @@
                 if(this.nextSibling) {
                     this.style.display = 'none';
                 }
+
+                $list.style.display = 'none';
             });
         };
 
@@ -224,7 +226,7 @@
                 length = _inputValue.length;
 
                 if(length) {
-                    $input.style.width = length == 0 ? '10px' : length * 15 + 'px';   // modify the width of input realtime.
+                    $input.style.width = length == 0 ? '10px' : length * 17 + 'px';   // modify the width of input realtime.
 
                     _getFilterData(_inputValue);    // get filter data
 
@@ -420,8 +422,10 @@
                 if(_resultList.length < _this.maxResult) {  // limit the number of result lsit
                     if(cur.toString().indexOf(value) == 0 && !_isExisted($el.value.split(';'), curItem[_this.savedKey])) {    // filter reduplicate item
                         _resultList.push(curItem);
+                        break;
                     }
                 }
+                console.log(11)
             }
         }
     }

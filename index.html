@@ -36,76 +36,182 @@
             <a href="javascript:;" id="destroy" title="destroy">destroy</a>
             <a href="javascript:;" id="reset" title="reset">reset</a>
         </div>
-        <script src="dist/js/dataSelector.js"></script>
+        <script src="src/js/dataSelector.js"></script>
         <script type="text/javascript">
             var s = new dataSelector({
-                template: '<span>%:capital%</span> - <span>[[%:alias%]]</span> - %:alias%',
-                savedKey: 'alias',
-                showKey: 'capital',
-                maxResult: 10,
-                resultScroll: true,
-                data: [
-                    {
-                        "id": 1,
-                        "capital": "北京1",
-                        "alias": "BJ1"
-                    },
-                    {
-                        "id": 2,
-                        "capital": "北京2",
-                        "alias": "BJ2"
-                    },
-                    {
-                        "id": 3,
-                        "capital": "北京3",
-                        "alias": "BJ3"
-                    },
-                    {
-                        "id": 4,
-                        "capital": "北京4",
-                        "alias": "BJ4"
-                    },
-                    {
-                        "id": 5,
-                        "capital": "北京5",
-                        "alias": "BJ5"
-                    },
-                    {
-                        "id": 6,
-                        "capital": "北京6",
-                        "alias": "BJ6"
-                    },
-                    {
-                        "id": 7,
-                        "capital": "北京7",
-                        "alias": "BJ7"
-                    },
-                    {
-                        "id": 8,
-                        "capital": "北京8",
-                        "alias": "BJ8"
-                    },
-                    {
-                        "id": 9,
-                        "capital": "北京9",
-                        "alias": "BJ9"
-                    },
-                    {
-                        "id": 10,
-                        "capital": "北京10",
-                        "alias": "BJ10"
-                    },
-                    {
-                        "id": 11,
-                        "capital": "北京11",
-                        "alias": "BJ1"
-                    },
-                    {
-                        "id": 12,
-                        "capital": "北京12",
-                        "alias": "BJ12"
-                    }
-                ]
+                template: '<span>%:province%</span> - <span>[[%:capital%]]</span> - <span>%:alias%</span>',
+				data: [
+					{
+						province: '北京市',
+						capital: '北京',
+						alias: '京'
+					},
+					{
+						province: '天津市',
+						capital: '天津',
+						alias: '津'
+					},
+					{
+						province: '上海市',
+						capital: '上海',
+						alias: '沪'
+					},
+					{
+						province: '重庆市',
+						capital: '重庆',
+						alias: '渝'
+					},
+					{
+						province: '河北省',
+						capital: '石家庄',
+						alias: '冀'
+					},
+					{
+						province: '河南省',
+						capital: '郑州',
+						alias: '豫'
+					},
+					{
+						province: '湖北省',
+						capital: '武汉',
+						alias: '鄂'
+					},
+					{
+						province: '湖南省',
+						capital: '长沙',
+						alias: '湘'
+					},
+					{
+						province: '江苏省',
+						capital: '南京',
+						alias: '苏'
+					},
+					{
+						province: '江西省',
+						capital: '南昌',
+						alias: '赣'
+					},
+					{
+						province: '辽宁省',
+						capital: '沈阳',
+						alias: '辽'
+					},
+					{
+						province: '吉林省',
+						capital: '长春',
+						alias: '吉'
+					},
+					{
+						province: '黑龙江省',
+						capital: '哈尔滨',
+						alias: '黑'
+					},
+					{
+						province: '陕西省',
+						capital: '西安',
+						alias: '陕'
+					},
+					{
+						province: '山西省',
+						capital: '太原',
+						alias: '晋'
+					},
+					{
+						province: '山东省',
+						capital: '济南',
+						alias: '鲁'
+					},
+					{
+						province: '四川省',
+						capital: '成都',
+						alias: '川'
+					},
+					{
+						province: '青海省',
+						capital: '西宁',
+						alias: '青'
+					},
+					{
+						province: '安徽省',
+						capital: '合肥',
+						alias: '皖'
+					},
+					{
+						province: '海南省',
+						capital: '海口',
+						alias: '琼'
+					},
+					{
+						province: '广东省',
+						capital: '广州',
+						alias: '粤'
+					},
+					{
+						province: '贵州省',
+						capital: '贵阳',
+						alias: '贵'
+					},
+					{
+						province: '浙江省',
+						capital: '杭州',
+						alias: '浙'
+					},
+					{
+						province: '福建省',
+						capital: '福州',
+						alias: '闽'
+					},
+					{
+						province: '台湾省',
+						capital: '台北',
+						alias: '台'
+					},
+					{
+						province: '甘肃省',
+						capital: '兰州',
+						alias: '甘'
+					},
+					{
+						province: '云南省',
+						capital: '昆明',
+						alias: '云'
+					},
+					{
+						province: '西藏自治区',
+						capital: '拉萨',
+						alias: '藏'
+					},
+					{
+						province: '宁夏回族自治区',
+						capital: '银川',
+						alias: '宁'
+					},
+					{
+						province: '广西壮族自治区',
+						capital: '南宁',
+						alias: '桂'
+					},
+					{
+						province: '新疆维吾尔自治区',
+						capital: '乌鲁木齐',
+						alias: '新'
+					},
+					{
+						province: '内蒙古自治区',
+						capital: '呼和浩特',
+						alias: '蒙'
+					},
+					{
+						province: '香港特别行政区',
+						capital: '香港',
+						alias: '港'
+					},
+					{
+						province: '澳门特别行政区',
+						capital: '澳门',
+						alias: '澳'
+					}
+				]
             });
 
             document.querySelector('#getValue').addEventListener('click', function(){
