@@ -35,12 +35,77 @@
             <a href="javascript:;" id="clear" title="clear">clear</a>
             <a href="javascript:;" id="destroy" title="destroy">destroy</a>
             <a href="javascript:;" id="reset" title="reset">reset</a>
+            <a href="javascript:;" id="setData" title="setData">setData</a>
         </div>
-        <script src="src/js/dataSelector.js"></script>
+        <script src="dist/js/dataSelector.js"></script>
         <script type="text/javascript">
             var s = new dataSelector({
-                template: '<span>%:province%</span> - <span>[[%:capital%]]</span> - <span>%:alias%</span>',
-				data: [
+                template: '<span>%:province%</span> - <span>[[%:capital%]]</span> - <span>%:alias%</span>'
+            });
+
+            document.querySelector('#getValue').addEventListener('click', function(){
+                alert(s.getValue());
+            }, false);
+
+            document.querySelector('#setValue').addEventListener('click', function(){
+                s.setValue([
+                    {
+						province: '北京市',
+						capital: '北京',
+						alias: '京'
+					},
+					{
+						province: '天津市',
+						capital: '天津',
+						alias: '津'
+					},
+					{
+						province: '上海市',
+						capital: '上海',
+						alias: '沪'
+					}
+                ]);
+            }, false);
+
+            document.querySelector('#appendValue').addEventListener('click', function(){
+                s.appendValue([
+                    {
+						province: '北京市',
+						capital: '北京',
+						alias: '京'
+					},
+                    {
+						province: '河北省',
+						capital: '石家庄',
+						alias: '冀'
+					},
+					{
+						province: '河南省',
+						capital: '郑州',
+						alias: '豫'
+					},
+					{
+						province: '上海市',
+						capital: '上海',
+						alias: '沪'
+					}
+                ]);
+            }, false);
+
+            document.querySelector('#clear').addEventListener('click', function(){
+                s.clear();
+            });
+
+            document.querySelector('#destroy').addEventListener('click', function(){
+                s.destroy();
+            });
+
+            document.querySelector('#reset').addEventListener('click', function(){
+                s.reset();
+            });
+
+            document.querySelector('#setData').addEventListener('click', function() {
+                s.setData([
 					{
 						province: '北京市',
 						capital: '北京',
@@ -211,69 +276,8 @@
 						capital: '澳门',
 						alias: '澳'
 					}
-				]
-            });
-
-            document.querySelector('#getValue').addEventListener('click', function(){
-                alert(s.getValue());
-            }, false);
-
-            document.querySelector('#setValue').addEventListener('click', function(){
-                s.setValue([
-                    {
-                        "id": 3,
-                        "capital": "北京3",
-                        "alias": "BJ3"
-                    },
-                    {
-                        "id": 4,
-                        "capital": "北京4",
-                        "alias": "BJ4"
-                    },
-                    {
-                        "id": 5,
-                        "capital": "北京5",
-                        "alias": "BJ5"
-                    }
-                ]);
-            }, false);
-
-            document.querySelector('#appendValue').addEventListener('click', function(){
-                s.appendValue([
-                    {
-                        "id": 3,
-                        "capital": "北京3",
-                        "alias": "BJ3"
-                    },
-                    {
-                        "id": 7,
-                        "capital": "北京7",
-                        "alias": "BJ7"
-                    },
-                    {
-                        "id": 5,
-                        "capital": "北京5",
-                        "alias": "BJ5"
-                    },
-                    {
-                        "id": 10,
-                        "capital": "北京10",
-                        "alias": "BJ10"
-                    }
-                ]);
-            }, false);
-
-            document.querySelector('#clear').addEventListener('click', function(){
-                s.clear();
-            });
-
-            document.querySelector('#destroy').addEventListener('click', function(){
-                s.destroy();
-            });
-
-            document.querySelector('#reset').addEventListener('click', function(){
-                s.reset();
-            });
+				]);
+            })
         </script>
     </body>
 </html>

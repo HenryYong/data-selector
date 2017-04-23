@@ -403,7 +403,10 @@
      *  @param value {String} user input
      */
     var _getFilterData = function(value) {
-        var data = _this.data;
+        var data = _this.data,
+            resultLength = _this.maxResult,
+            matchFromStart = [],
+            matchInside = [];
 
         if(!value) {    // if the input is empty, then emptry result list and return
             _resultList = [];
@@ -412,21 +415,58 @@
 
         _resultList = [];   // reset result list
 
-        for(var i in data) {    // traversal all data
-            var curItem = data[i];
+        try{
+            /**
+             *  Comparing logic:
+             *  Display items which are matching with input from start.
+             *  If the amount is less than the maxResult, display items which
+             *  contain the input (not from start).
+             */
+            for(var i in data) {    // traversal all data
+                var curItem = data[i];
 
-            for(var j in _tempFilterKey) {  // in each item, compare value according to every filter key
-                var curKey = _tempFilterKey[j],
-                    cur = curItem[curKey];
+                for(var j in _tempFilterKey) {  // in each item, compare value according to every filter key
+                    var curKey = _tempFilterKey[j],
+                        cur = curItem[curKey];
 
-                if(_resultList.length < _this.maxResult) {  // limit the number of result lsit
-                    if(cur.toString().indexOf(value) == 0 && !_isExisted($el.value.split(';'), curItem[_this.savedKey])) {    // filter reduplicate item
-                        _resultList.push(curItem);
-                        break;
+                    if(_resultList.length < resultLength) {  // limit the number of result list
+                        var curIndex = cur.toString().indexOf(value);
+
+                        if(!_isExisted($el.value.split(';'), curItem[_this.savedKey])) {//console.log(matchFromStart, matchInside)
+                            if(curIndex == 0) {         // save the item matches from start
+                                matchFromStart.push(curItem);
+                            }
+                            else if(curIndex > 0) {     // save the item matches from inside of item
+                                matchInside.push(curItem);
+                            }
+                        }
+
+                        if(matchFromStart.length == resultLength) {
+                            _resultList = matchFromStart;
+                            throw true;
+                        }
                     }
                 }
             }
         }
+        catch(e) {
+            return;
+        }
+
+        // the length of matchFromStart is not enough, append some subitem from matchInside.
+        var matchFromStartStr = '', matchInsideStr = '';
+
+        for(var item in matchFromStart) {
+            matchFromStartStr += JSON.stringify(matchFromStart[item]) + ',';
+        }
+
+        for(var item in matchInside) {  // remove reduplicate item between matchFromStart and matchInside
+            if(~matchFromStartStr.indexOf(JSON.stringify(matchInside[item]))) {
+                matchInside.splice(item, 1);
+            }
+        }
+
+        _resultList = matchFromStart.concat(matchInside).slice(0, resultLength);
     }
 
     /**
@@ -559,6 +599,14 @@
      */
     dataSelector.prototype.reset = function() {
         new dataSelector(_options);
+    }
+
+    /**
+     *  set data
+     *  @param arr {Array} array of data to be filtered
+     */
+    dataSelector.prototype.setData = function(arr) {
+        _this.data = arr;
     }
 
     return dataSelector;
