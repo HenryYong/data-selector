@@ -33,7 +33,6 @@ Dropdown component of data selecting
 - **maxData**: limit the number of selected item, `-1` is default and means no limitation.
 - **maxResult**: number of items in result list, default value is `5`.
 - **resultScroll**: the list can be scrolled or not, default value is `false`.
-- **style**: `input` style for now, `popup` and `list` style will be added later, default value is `input`.
 - **filterKey**: key for filter
 - **savedKey**: key for saving selected item. Only one key can be supported. If an array is setting, it will only use the first value as savedKey.
 - **showKey**: key for display selected item
@@ -44,8 +43,18 @@ Dropdown component of data selecting
 	var ds = new dataSelector();
 	ds.setValue(arr)
 	ds.getValue()
+	ds.setData()
 	ds.appendValue(arr)
 	ds.clear()
 	ds.destroy()
 	ds.reset()
 ```
+
+## Changelog
+
+### v1.2.0
+- Support multiple instances at same time.
+- Remove some useless global variables.
+
+### v1.1.0
+- Add API: `setData`

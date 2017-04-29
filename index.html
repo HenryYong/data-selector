@@ -24,10 +24,15 @@
             .row a:hover{
                 background-color: #fafafa;
             }
+
+            .intro{
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
         <div class="row">
+            <p class="intro">默认仅含有template字段的初始化，可输入任意省份、省会或省的简称</p>
             <input type="text" data-id="data-selector">
             <a href="javascript:;" id="getValue" title="getValue">getValue</a>
             <a href="javascript:;" id="setValue" title="setValue">setValue</a>
@@ -35,20 +40,24 @@
             <a href="javascript:;" id="clear" title="clear">clear</a>
             <a href="javascript:;" id="destroy" title="destroy">destroy</a>
             <a href="javascript:;" id="reset" title="reset">reset</a>
+        </div>
+        <div class="row">
+            <p class="intro">最多选择三个数据；初始化时没有传入带筛选的数据，点setData按钮可设置。（可通过该方法实现异步加载数据）</p>
+            <input type="text" id="demo2">
             <a href="javascript:;" id="setData" title="setData">setData</a>
         </div>
         <script src="dist/js/dataSelector.js"></script>
         <script type="text/javascript">
-            var s = new dataSelector({
+            var demo1 = new dataSelector({
                 template: '<span>%:province%</span> - <span>[[%:capital%]]</span> - <span>%:alias%</span>'
             });
 
             document.querySelector('#getValue').addEventListener('click', function(){
-                alert(s.getValue());
+                alert(demo1.getValue());
             }, false);
 
             document.querySelector('#setValue').addEventListener('click', function(){
-                s.setValue([
+                demo1.setValue([
                     {
 						province: '北京市',
 						capital: '北京',
@@ -68,7 +77,7 @@
             }, false);
 
             document.querySelector('#appendValue').addEventListener('click', function(){
-                s.appendValue([
+                demo1.appendValue([
                     {
 						province: '北京市',
 						capital: '北京',
@@ -93,191 +102,63 @@
             }, false);
 
             document.querySelector('#clear').addEventListener('click', function(){
-                s.clear();
+                demo1.clear();
             });
 
             document.querySelector('#destroy').addEventListener('click', function(){
-                s.destroy();
+                demo1.destroy();
             });
 
             document.querySelector('#reset').addEventListener('click', function(){
-                s.reset();
+                demo1.reset();
+            });
+
+            var demo2 = new dataSelector({
+                el: '#demo2',
+                template: '[[%:name%]] - %:age% - <span style="font-style: italic;">%:gender%</span>',
+                maxData: 3,
+                maxResult: 3
             });
 
             document.querySelector('#setData').addEventListener('click', function() {
-                s.setData([
-					{
-						province: '北京市',
-						capital: '北京',
-						alias: '京'
-					},
-					{
-						province: '天津市',
-						capital: '天津',
-						alias: '津'
-					},
-					{
-						province: '上海市',
-						capital: '上海',
-						alias: '沪'
-					},
-					{
-						province: '重庆市',
-						capital: '重庆',
-						alias: '渝'
-					},
-					{
-						province: '河北省',
-						capital: '石家庄',
-						alias: '冀'
-					},
-					{
-						province: '河南省',
-						capital: '郑州',
-						alias: '豫'
-					},
-					{
-						province: '湖北省',
-						capital: '武汉',
-						alias: '鄂'
-					},
-					{
-						province: '湖南省',
-						capital: '长沙',
-						alias: '湘'
-					},
-					{
-						province: '江苏省',
-						capital: '南京',
-						alias: '苏'
-					},
-					{
-						province: '江西省',
-						capital: '南昌',
-						alias: '赣'
-					},
-					{
-						province: '辽宁省',
-						capital: '沈阳',
-						alias: '辽'
-					},
-					{
-						province: '吉林省',
-						capital: '长春',
-						alias: '吉'
-					},
-					{
-						province: '黑龙江省',
-						capital: '哈尔滨',
-						alias: '黑'
-					},
-					{
-						province: '陕西省',
-						capital: '西安',
-						alias: '陕'
-					},
-					{
-						province: '山西省',
-						capital: '太原',
-						alias: '晋'
-					},
-					{
-						province: '山东省',
-						capital: '济南',
-						alias: '鲁'
-					},
-					{
-						province: '四川省',
-						capital: '成都',
-						alias: '川'
-					},
-					{
-						province: '青海省',
-						capital: '西宁',
-						alias: '青'
-					},
-					{
-						province: '安徽省',
-						capital: '合肥',
-						alias: '皖'
-					},
-					{
-						province: '海南省',
-						capital: '海口',
-						alias: '琼'
-					},
-					{
-						province: '广东省',
-						capital: '广州',
-						alias: '粤'
-					},
-					{
-						province: '贵州省',
-						capital: '贵阳',
-						alias: '贵'
-					},
-					{
-						province: '浙江省',
-						capital: '杭州',
-						alias: '浙'
-					},
-					{
-						province: '福建省',
-						capital: '福州',
-						alias: '闽'
-					},
-					{
-						province: '台湾省',
-						capital: '台北',
-						alias: '台'
-					},
-					{
-						province: '甘肃省',
-						capital: '兰州',
-						alias: '甘'
-					},
-					{
-						province: '云南省',
-						capital: '昆明',
-						alias: '云'
-					},
-					{
-						province: '西藏自治区',
-						capital: '拉萨',
-						alias: '藏'
-					},
-					{
-						province: '宁夏回族自治区',
-						capital: '银川',
-						alias: '宁'
-					},
-					{
-						province: '广西壮族自治区',
-						capital: '南宁',
-						alias: '桂'
-					},
-					{
-						province: '新疆维吾尔自治区',
-						capital: '乌鲁木齐',
-						alias: '新'
-					},
-					{
-						province: '内蒙古自治区',
-						capital: '呼和浩特',
-						alias: '蒙'
-					},
-					{
-						province: '香港特别行政区',
-						capital: '香港',
-						alias: '港'
-					},
-					{
-						province: '澳门特别行政区',
-						capital: '澳门',
-						alias: '澳'
-					}
-				]);
-            })
+                demo2.setData([
+                    {
+                        name: 'Henry',
+                        age: 25,
+                        gender: 'male'
+                    },
+                    {
+                        name: 'Chris',
+                        age: 24,
+                        gender: 'female'
+                    },
+                    {
+                        name: 'Candy',
+                        age: 20,
+                        gender: 'female'
+                    },
+                    {
+                        name: 'Alex',
+                        age: 30,
+                        gender: 'male'
+                    },
+                    {
+                        name: 'Tom',
+                        age: 50,
+                        gender: 'male'
+                    },
+                    {
+                        name: 'Bob',
+                        age: 27,
+                        gender: 'male'
+                    },
+                    {
+                        name: 'Fiona',
+                        age: 18,
+                        gender: 'female'
+                    }
+                ]);
+            });
         </script>
     </body>
 </html>

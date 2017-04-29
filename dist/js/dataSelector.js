@@ -8,15 +8,10 @@
 })(this, (function() {
     'use strict';
 
-    var _this,                  // cache 'this'
-        _options,               // cache settings of plugin initialization
-        _inputValue = '',       // save user input temporarily
-        _tempFilterKey = [],    // key for filter data
+    var _options,               // cache settings of plugin initialization
         _resultList = [],       // array of data filtered on input
         _list = null,           // ul node in result list
         _selectItem = null;     // selected item
-
-    var $root, $el, $wrapper, $input, $list;    // save DOM node
 
     // Event binding
     var EventUtil = {
@@ -24,6 +19,8 @@
             return _type.split(' ');
         },
         addHandler: function(element, type, children, handler) {
+            var _this = this;
+
             if(handler == null) {   //element, type, handler
                 handler = children;
                 children = undefined;
@@ -32,7 +29,9 @@
             type = EventUtil.typeHandler(type);
 
             type.forEach(function(item, index) {
-                element.addEventListener(item, handler, false);
+                element.addEventListener(item, function(event) {
+                    handler.call(_this, event);
+                }, false);
             });
         }
     }
@@ -103,8 +102,7 @@
     function dataSelector(options) {
         var opts = options || {};
 
-        _this = this;
-        this.el = document.querySelector(opts.el) || document.querySelector('[data-id="data-selector"]');   // hidden input
+        this.$el = document.querySelector(opts.el) || document.querySelector('[data-id="data-selector"]');   // hidden input
         this.template = opts.template || '';   // *template for result list, required
         this.data = opts.data || [];           // *data to be filtered and selected, required
         this.maxData = opts.maxData || -1;     // whether limit the number of selected item, -1 means no limitation
@@ -125,29 +123,39 @@
         this.$input = null;         // user input
         this.$list = null;          // dropdown list
 
-        _init();
+        _init.call(this);
+    }
+
+    /**
+     *  handle user custom setting error
+     */
+    var _handleSettingError = function() {
+        if(!this.template) {
+            _error('template is required');
+            return false;
+        }
+
+        return true;
     }
 
     /**
      *  init plugin
      */
     var _init = function() {
-        if(!_this.template) {
-            _error('template is required');
-            return;
-        }
+        var error = _handleSettingError.call(this);
 
-        _initStyle();
-        _initEvents();
-        _extractTmp();
+        if(!error) {return;}
+
+        _initStyle.call(this);
+        _initEvents.call(this);
+        _extractTmp.call(this);
     }
 
     /**
      *  init style
      */
     var _initStyle = function() {
-        var rootName = 'data-selector',
-            $hiddenInput = _this.el.cloneNode(true),
+        var $hiddenInput = this.$el.cloneNode(true),
             children;
 
         $hiddenInput.className += 'hidden';
@@ -161,21 +169,15 @@
                     '</div>',
             fragment = _compileStringToDOM(html);
 
-        _this.el.parentNode.insertBefore(fragment, _this.el);
+        this.$el.parentNode.insertBefore(fragment, this.$el);
 
-        _this.$root = _this.el.previousSibling;
-        children = _this.$root.childNodes;
-        _this.el = children[0];
-        _this.$wrapper = children[1];
-        _this.$list = children[2];
-        _this.$input = _this.$wrapper.childNodes[0];
-        _this.$root.parentNode.removeChild(_this.$root.nextSibling);
-
-        $root = _this.$root;
-        $el = _this.el;
-        $wrapper = _this.$wrapper;
-        $list = _this.$list;
-        $input = _this.$input;
+        this.$root = this.$el.previousSibling;
+        children = this.$root.childNodes;
+        this.$el = children[0];
+        this.$wrapper = children[1];
+        this.$list = children[2];
+        this.$input = this.$wrapper.childNodes[0];
+        this.$root.parentNode.removeChild(this.$root.nextSibling);
     }
 
     /**
@@ -183,106 +185,108 @@
      */
     var _initEvents = function() {
         var __inputOnBlur = function() {    // when input blur
-            EventUtil.addHandler($input, 'blur', function() {
+            EventUtil.addHandler.call(this, this.$input, 'blur', function() {
                 this.value = '';
-                this.style.width = '10px';
+                this.$input.style.width = '10px';
 
                 if(this.nextSibling) {
-                    this.style.display = 'none';
+                    this.$input.style.display = 'none';
                 }
 
-                $list.style.display = 'none';
+                this.$list.style.display = 'none';
             });
         };
 
-        __inputOnBlur();
+        __inputOnBlur.call(this);
 
-        EventUtil.addHandler($wrapper, 'click', function(e) {   // simulate click in input
+        EventUtil.addHandler.call(this, this.$wrapper, 'click', function(e) {   // simulate click in input
             var target = e.target,
                 tag = target.tagName.toLowerCase(),
-                input = null;
+                input = null,
+                _this = this;
 
             if(tag === 'span') {
-                _findItem($wrapper, target, function(index) {
-                    input = $input.cloneNode(true);
-                    $wrapper.removeChild($input);
+                _findItem.call(this, this.$wrapper, target, function(index) {
+                    input = _this.$input.cloneNode(true);
+                    _this.$wrapper.removeChild(_this.$input);
                     target.parentNode.insertBefore(input, target.nextSibling);
-                    $input = input;
+                    _this.$input = input;
                 });
             }
 
-            $input.style.display = 'inline-block';
-            $input.focus();
-            __inputOnBlur();        // bind input blur event
+            this.$input.style.display = 'inline-block';
+            this.$input.focus();
+            __inputOnBlur.call(this);        // bind input blur event
         });
 
-        // 用户输入时的操作
-        EventUtil.addHandler($wrapper, 'input propertychange paste', function() {
+        // user input
+        EventUtil.addHandler.call(this, this.$wrapper, 'input propertychange paste', function() {
             var filterData = [],
-                length = 0;
+                length = 0,
+                val = this.$input.value;
 
-            if(_this.maxData == -1 || (_this.maxData && $el.value.split(';').length - 1 < _this.maxData)) {   // if the number of selected item is less then the available number
-                _inputValue = $input.value;
-                length = _inputValue.length;
+            if(this.maxData == -1 || (this.maxData && this.$el.value.split(';').length - 1 < this.maxData)) {   // if the number of selected item is less then the available number
+                length = val.length;
 
                 if(length) {
-                    $input.style.width = length == 0 ? '10px' : length * 17 + 'px';   // modify the width of input realtime.
+                    this.$input.style.width = length == 0 ? '10px' : length * 17 + 'px';   // modify the width of input realtime.
 
-                    _getFilterData(_inputValue);    // get filter data
+                    _getFilterData.call(this, val);    // get filter data
 
                     if(!_resultList.length) {
                         _resultList = '';
                     }
 
-                    _renderResultList(_resultList); // render result
+                    _renderResultList.call(this, _resultList); // render result
                 }
                 else {      // hide result list when there is no input
-                    $list.style.display = 'none';
+                    this.$list.style.display = 'none';
                 }
             }
             else{
-                $input.value = '';
+                this.$input.value = '';
             }
         });
 
         // list click event
-        EventUtil.addHandler($list, 'click', function(e) {
-            _selectInList(e.target);
+        EventUtil.addHandler.call(this, this.$list, 'click', function(e) {
+            _selectInList.call(this, e.target);
         });
 
         // keyboard operation
-        EventUtil.addHandler($wrapper, 'keydown', function(e) {
+        EventUtil.addHandler.call(this, this.$wrapper, 'keydown', function(e) {
             var code = e.keyCode,
-                active = 'data-selector-active';
+                active = 'data-selector-active',
+                _this = this;
 
             switch(code) {
                 case 8:     // delete
                 case 46:
-                    if(!$input.value.length) {    // delete item when input is empty
-                        _findItem($wrapper, $input, function(index, item) {
+                    if(!this.$input.value.length) {    // delete item when input is empty
+                        _findItem.call(this, this.$wrapper, this.$input, function(index, item) {
                             var _index, direction;
 
                             if(code === 8 && index !== 0) {
                                 _index = index - 1;
                                 direction = 'left';
                             }
-                            else if(code === 46 && index !== $wrapper.childNodes.length) {
+                            else if(code === 46 && index !== _this.$wrapper.childNodes.length) {
                                 _index = index + 1;
                                 direction = 'right';
                             }
 
-                            _index != undefined ? _deleteItem(_index, direction) : '';
+                            _index != undefined ? _deleteItem.call(_this, _index, direction) : '';
                         });
                     }
                     break;
                 case 13:    // enter
-                    if($input.value.length && _resultList.length) {
-                        _selectInList($root.querySelector('.' + active));
+                    if(this.$input.value.length && _resultList.length) {
+                        _selectInList.call(this, this.$root.querySelector('.' + active));
                     }
                     break;
                 case 38:    // up
                 case 40:    // down
-                    var curItem = $root.querySelector('.' + active);
+                    var curItem = this.$root.querySelector('.' + active);
 
                     if(!curItem) {  // no result
                         return;
@@ -291,7 +295,7 @@
                     var curParent = curItem.parentNode,
                         children = curParent.childNodes,
                         childrenLength = children.length,
-                        $ul = $list.querySelector('ul');
+                        $ul = this.$list.querySelector('ul');
 
                     var _index, len, sibling, targetIndex;
 
@@ -306,7 +310,7 @@
                         sibling = 'nextSibling';
                     }
 
-                    _findItem(curParent, curItem, function(index) {
+                    _findItem.call(this, curParent, curItem, function(index) {
                         if(index == _index) {
                             children[len].className += active;
                         }
@@ -348,9 +352,10 @@
      *  function of select item in list
      */
     var _selectInList = function(target) {
-        var li = _list.childNodes,
+        var li = this.$list.childNodes,
             parent = null,
-            attr = target.getAttribute('data-selector');
+            attr = target.getAttribute('data-selector'),
+            _this = this;
 
         if(attr !== 'empty') {
             while(attr !== 'li') {  // focus on the outer li tag
@@ -358,29 +363,29 @@
             }
         }
         else {
-            $list.style.display = 'none';
+            this.$list.style.display = 'none';
             return;
         }
 
-        _findItem(_list, target, function(index) {
-            var value = $el.value;
+        _findItem.call(this, _list, target, function(index) {
+            var value = _this.$el.value;
 
             _selectItem = _resultList[index];
-            $el.value += _selectItem[_this.savedKey] + ';';    // add selected item in hidden input
+            _this.$el.value += _selectItem[_this.savedKey] + ';';    // add selected item in hidden input
         });
 
-        _renderSelector();
+        _renderSelector.call(this);
     }
 
     /**
      *  extract info from template
      */
     var _extractTmp = function() {
-        var tpl = _this.template,
-            filterKey = _this.filterKey;
+        var tpl = this.template,
+            filterKey = this.filterKey,
+            _this = this;
 
         if(filterKey.length) {
-            _tempFilterKey = _this.filterKey;
             return;
         }
 
@@ -390,12 +395,12 @@
             }),
                 count = 0;
 
-            if(!_isExisted(_tempFilterKey, key)) {  // filter reduplicate keys
-                _tempFilterKey.push(key);
+            if(!_isExisted(_this.filterKey, key)) {  // filter reduplicate keys
+                _this.filterKey.push(key);
             }
         });
 
-        !_this.savedKey ? _this.savedKey = _tempFilterKey[0] : '';   // if there is no savedkey, then get the first key from template
+        !this.savedKey ? this.savedKey = this.filterKey[0] : '';   // if there is no savedkey, then get the first key from template
     }
 
     /**
@@ -403,8 +408,8 @@
      *  @param value {String} user input
      */
     var _getFilterData = function(value) {
-        var data = _this.data,
-            resultLength = _this.maxResult,
+        var data = this.data,
+            resultLength = this.maxResult,
             matchFromStart = [],
             matchInside = [];
 
@@ -425,14 +430,14 @@
             for(var i in data) {    // traversal all data
                 var curItem = data[i];
 
-                for(var j in _tempFilterKey) {  // in each item, compare value according to every filter key
-                    var curKey = _tempFilterKey[j],
+                for(var j in this.filterKey) {  // in each item, compare value according to every filter key
+                    var curKey = this.filterKey[j],
                         cur = curItem[curKey];
 
                     if(_resultList.length < resultLength) {  // limit the number of result list
                         var curIndex = cur.toString().indexOf(value);
 
-                        if(!_isExisted($el.value.split(';'), curItem[_this.savedKey])) {//console.log(matchFromStart, matchInside)
+                        if(!_isExisted(this.$el.value.split(';'), curItem[this.savedKey])) {
                             if(curIndex == 0) {         // save the item matches from start
                                 matchFromStart.push(curItem);
                             }
@@ -475,10 +480,11 @@
      */
     var _renderResultList = function(arr) {
         var fragment = null,
-            template = '';
+            template = '',
+            _this = this;
 
         if(arr instanceof Array) {
-            template = '<ul class="' + (_this.resultScroll ? 'scrollable' : '') + '">';
+            template = '<ul class="' + (this.resultScroll ? 'scrollable' : '') + '">';
 
             arr.forEach(function(item, index) {
                 var _template = _this.template.replace(/%:(\w*)%/g, function(origin, matched) {
@@ -486,7 +492,7 @@
                 });
 
                 _template = _template.replace(/\[\[(\S*)\]\]/g, function(origin, matched) { // render highlight field
-                    var val = $input.value;
+                    var val = _this.$input.value;
 
                     return '<span class="data-selector-highlight">' + (~matched.indexOf(val) ? val : '') + '</span>' + matched.replace(val, '');
                 });
@@ -502,26 +508,26 @@
         }
 
         template += '</ul>';
-        $list.innerHTML = '';
+        this.$list.innerHTML = '';
         fragment = _compileStringToDOM(template, $list);
-        $list.appendChild(fragment);
-        $list.style.cssText += 'display: block; left: ' + $input.offsetLeft + 'px; top: ' + ($input.offsetTop + 32) + 'px;';
-        _list = $list.children[0];      // cache new list
+        this.$list.appendChild(fragment);
+        this.$list.style.cssText += 'display: block; left: ' + this.$input.offsetLeft + 'px; top: ' + (this.$input.offsetTop + 32) + 'px;';
+        _list = this.$list.children[0];      // cache new list
     }
 
     /**
      *  joint and render selected item
      */
     var _renderSelector = function() {
-        var key = _this.showKey || _tempFilterKey[0],
+        var key = this.showKey || this.filterKey[0],
             html = '<span class="data-selector-item">' + _selectItem[key] + '</span>',
             fragment = _compileStringToDOM(html);
 
-        $wrapper.insertBefore(fragment, $input);
+        this.$wrapper.insertBefore(fragment, this.$input);
         // reset input and dropdown list
-        $input.value = '';
-        $input.style.width = '10px';
-        $list.style.display = 'none';
+        this.$input.value = '';
+        this.$input.style.width = '10px';
+        this.$list.style.display = 'none';
     }
 
     /**
@@ -530,11 +536,11 @@
      *  @param direction {String} direction of using keyboard to delete item
      */
     var _deleteItem = function(index, direction) {
-        var valueArr = $el.value.split(';');
+        var valueArr = this.$el.value.split(';');
 
-        delete $wrapper.removeChild($wrapper.childNodes[index]);    // remove DOM node
+        delete this.$wrapper.removeChild(this.$wrapper.childNodes[index]);    // remove DOM node
         valueArr.splice(direction == 'left' ? index : (index - 1), 1);  // clear value in input
-        $el.value = valueArr.join(';');
+        this.$el.value = valueArr.join(';');
     }
 
     // public API
@@ -543,13 +549,15 @@
      *  @param data {Array} array of data
      */
     dataSelector.prototype.setValue = function(arr) {
+        var _this = this;
+
         if(arr instanceof Array) {
-            $el.value = '';
-            Array.prototype.forEach.call($wrapper.querySelectorAll('span'), function(item, index) {
-                $wrapper.removeChild(item);
+            this.$el.value = '';
+            Array.prototype.forEach.call(this.$wrapper.querySelectorAll('span'), function(item, index) {
+                _this.$wrapper.removeChild(item);
             });
 
-            this.appendValue(arr)
+            this.appendValue(arr);
         }
     }
 
@@ -557,7 +565,7 @@
      *  get selected items
      */
     dataSelector.prototype.getValue = function() {
-        return $el.value;
+        return this.$el.value;
     }
 
     /**
@@ -565,12 +573,14 @@
      *  @param arr {Array} array of data
      */
     dataSelector.prototype.appendValue = function(arr) {
+        var _this = this;
+
         if(arr instanceof Array) {
             arr.forEach(function(item, index) {
-                if(!_isExisted($el.value.split(';'), item[_this.savedKey])) {
-                    $el.value += item[_this.savedKey] + ';';
+                if(!_isExisted(_this.$el.value.split(';'), item[_this.savedKey])) {
+                    _this.$el.value += item[_this.savedKey] + ';';
                     _selectItem = item;
-                    _renderSelector();
+                    _renderSelector.call(_this);
                 }
             });
         }
@@ -580,9 +590,11 @@
      *  remove all selected items
      */
     dataSelector.prototype.clear = function() {
-        $el.value = '';
-        Array.prototype.forEach.call($wrapper.querySelectorAll('span'), function(item, index) {
-            $wrapper.removeChild(item);
+        var _this = this;
+
+        this.$el.value = '';
+        Array.prototype.forEach.call(this.$wrapper.querySelectorAll('span'), function(item, index) {
+            _this.$wrapper.removeChild(item);
         });
     }
 
@@ -590,8 +602,8 @@
      *  destroy the plugin
      */
     dataSelector.prototype.destroy = function() {
-        $el.className = $el.className.replace('hidden', '');
-        $root.parentNode.replaceChild($el, $root);
+        this.$el.className = this.$el.className.replace('hidden', '');
+        this.$root.parentNode.replaceChild(this.$el, this.$root);
     }
 
     /**
@@ -606,7 +618,8 @@
      *  @param arr {Array} array of data to be filtered
      */
     dataSelector.prototype.setData = function(arr) {
-        _this.data = arr;
+        this.data = arr;
+        console.log('Data is set.');
     }
 
     return dataSelector;
